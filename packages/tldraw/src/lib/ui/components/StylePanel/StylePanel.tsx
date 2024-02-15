@@ -128,6 +128,7 @@ function CommonStylePickerSet({
 	const size = styles.get(DefaultSizeStyle)
 
 	const showPickers = fill !== undefined || dash !== undefined || size !== undefined
+	const showOpacitySlider = !editor.isIn('hand') && !editor.isIn('eraser')
 
 	const opacityIndex =
 		opacity.type === 'mixed'
@@ -155,18 +156,19 @@ function CommonStylePickerSet({
 						onValueChange={handleValueChange}
 					/>
 				)}
-				{opacity === undefined ? null : (
-					<Slider
-						data-testid="style.opacity"
-						value={opacityIndex >= 0 ? opacityIndex : tldrawSupportedOpacities.length - 1}
-						label={
-							opacity.type === 'mixed' ? 'style-panel.mixed' : `opacity-style.${opacity.value}`
-						}
-						onValueChange={handleOpacityValueChange}
-						steps={tldrawSupportedOpacities.length - 1}
-						title={msg('style-panel.opacity')}
-					/>
-				)}
+				{opacity === undefined ||
+					(showOpacitySlider && (
+						<Slider
+							data-testid="style.opacity"
+							value={opacityIndex >= 0 ? opacityIndex : tldrawSupportedOpacities.length - 1}
+							label={
+								opacity.type === 'mixed' ? 'style-panel.mixed' : `opacity-style.${opacity.value}`
+							}
+							onValueChange={handleOpacityValueChange}
+							steps={tldrawSupportedOpacities.length - 1}
+							title={msg('style-panel.opacity')}
+						/>
+					))}
 			</div>
 			{showPickers && (
 				<div className="tlui-style-panel__section" aria-label="style panel styles">
